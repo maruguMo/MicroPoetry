@@ -1,0 +1,174 @@
+<%- include("partials/header.ejs") %>
+
+<div class="menu-bar">
+    <!-- btn-group" role="group" aria-label="Buttons" -->
+    <button class="btn btn-primary btn-sm btn-dark" id="openFormModal"><i class="fa-regular fa-square-plus"></i> New Poem</button>
+    <button class="btn btn-primary btn-sm btn-dark" id="poemarchives"><i class="fas fa-archive" aria-hidden="true"></i> Archived Poems</button>
+</div> 
+<div id="formModal" class="modal">
+    <div class="mymodal-content">
+        <div class="ModalTitleBar">NEW POEM
+            <span class="close" id="closeFormModal">&times;</span>
+        </div>
+        <form id="post-form" action="/post" method="POST">
+            <div class="mb-3">
+                <input class="form-control" id="title" name="title" type="text" placeholder="Title"  required />
+            </div>
+            <div class="mb-3">
+                <select id="form" name="form" required>
+                    <!-- Options will be populated from the database -->
+                    <% forms.forEach(function(form) { %>
+                      <option value="<%= form %>"><%= form %></option>
+                    <% }); %>
+                  </select>
+                <!-- <input class="form-control" name ="Form" type="text" placeholder="Form"  required/> -->
+            </div>
+            <div  id="editor" class="editor"> </div>
+            <input type ="hidden" name="content" id="content" />
+            <button class="button btn btn-secondary btn-sm" type="reset">Reset</button>
+            <button class="button links btn btn-dark btn-sm" type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+<h5 id="Posts" class="ModalTitle">New Poems</h5>
+    <div class="header-bar">
+        <div class="header-title">Title</div>
+        <div class="header-form">Form</div>
+        <div class="header-views">Views</div>
+        <div class="header-date">Posted</div>
+    </div>
+    <ul id="posts">
+    <% posts.forEach(post => { %>
+        <!-- <hr> -->
+        <li>
+            <div class="card post">
+                <div class="content">
+                    <div class="title">
+                        <a href="#" class="view-post position-relative" data-id="<%= post.id %>">
+                            <span><%= post.title %>
+                                <span class="badge bg-danger notify-white">
+                                    <%= post.comments_count %>
+                                </span>  
+                            </span>
+                        </a>
+                    </div>
+                    <div class="Poemform">
+                        <span data-formName="<%= post.form %>"><%= post.form %></span>
+                    </div>
+                    <div class="views">
+                        <span><%= post.views %></span>
+                    </div>
+                    <div class="date-posted">
+                        <span>
+                           <%= new Date(post.timestamp).toLocaleString('en-US', { 
+                              year: 'numeric', month: 'short', day: 'numeric' , hour: 'numeric', minute: 'numeric', second: 'numeric' 
+                            }) %>
+                        </span>                        
+                    </div>
+                </div>
+                <div class="crud btn-group">
+                    <button class="edit-post links btn btn-light btn-sm" data-id="<%= post.id %>">Edit<i class="far fa-edit" aria-hidden="true"></i></i></button>
+                    <button class="archive-post links btn btn-light btn-sm" data-id="<%= post.id %>">Archive<i class="fas fa-archive" aria-hidden="true"></i></button>
+                    <div class="del-post links btn  btn-light btn-sm" data-id="<%= post.id %>">Delete<i class="fas fa-backspace" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </li>
+    <% }); %>
+</ul>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end pagination-sm">
+      <li class="page-item disabled">
+        <a class="page-link">Previous</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#">Next</a>
+      </li>
+    </ul>
+  </nav>
+  <!-- View Post Modal -->
+  <div id="myModal" class="modal">
+        <div class="mymodal-content mygrid-container ql-container ql-snow" >
+            <div class="grid-item row-span ModalTitleBar">VIEW POEM <span class="close" id="closeViewModal">&times;</span></div>
+            <div class="grid-item row-span"><h4 id="modal-title"></h4></div>
+            <div class="grid-item row-span padleft"><h6 id="modalForm"></h6></div>
+            <div class="grid-item over-flow padleft modal-small ql-editor" id = "modal-content" ></div>
+            <div class="grid-item over-flow padleft padright poemformback" id="modal-form">Item 4</div>
+            <div class="grid-item row-span">
+                <button class ="links btn btn-dark btn-sm" id="ExpandCollapse">
+                    Add Comment <i id ="plusminus"class="fas fa-plus fa-minus" aria-hidden="true"></i>
+                </button>
+                <!-- <i class="fa fa-minus" aria-hidden="true"></i> -->
+                <div class="commentsContainer collapsible" id="commentsContainer">
+                    
+                    <form id="comment-form">
+                        <input type="hidden" id="comment-post-id" name="postId">
+                        <div class="mb-3">
+                            <label for="author" class="form-label">Author:</label>
+                            <input class="form-control" type="text" id="author" name="author" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="comment-content" class="form-label">Comment</label>
+                            <textarea class="form-control" id="comment-content" name="content" required></textarea>
+                        </div>
+                        <button type="submit" class="links btn btn-dark btn-sm">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <div class="grid-item row-span">
+                <hr class="divider">
+            </div>
+            <div class="grid-item row-span" id="commentsList"></div>
+        </div>
+  </div>  
+  <!-- Edit Post Modal -->
+  <div id="editFormModal" class="modal">
+    <div class="mymodal-content">
+        <div class="ModalTitleBar">EDIT POEM
+            <span class="close" id="closeEditFormModal">&times;</span>
+        </div>
+        <form id="edit-post-form" action="/edit-post" method="POST">
+            <div class="mb-3">
+                <input class="form-control" id="edit-title" name="title" type="text" placeholder="Title" required />
+            </div>
+            <div class="mb-3">
+                <select id="edit-form" name="form" required>
+                    <!-- Options will be populated from the database -->
+                    <% forms.forEach(function(form) { %>
+                      <option value="<%= form %>"><%= form %></option>
+                    <% }); %>
+                </select>
+            </div>
+            <div id="edit-editor" class="editor"></div>
+            <input type="hidden" name="content" id="edit-content" />
+            <input type="hidden" name="post_id" id="edit-post-id" />
+            <!-- <button class="button btn btn-secondary" type="reset">Reset</button> -->
+            <button class="button btn links btn-dark btn-sm" type="submit">Save Changes</button>
+        </form>
+    </div>
+</div>
+<!-- Modal for archived posts -->
+<div id="archivedPostsModal" class="modal">
+    <div class="mymodal-content">
+      <div class="ModalTitleBar">
+        ARCHIVED POEMS
+        <span class="close" id="closeArchivedPostsModal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="post" id="archived-posts-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmModal" class="modal">
+    <div class="confirm-modal">
+      <p id="confirm-message">Are you sure you want to delete this poem?</p>
+      <div class="confirm-buttons">
+        <button id="confirm-delete" class="btn  btn-sm btn-dark">Yes</button>
+        <button id="cancel-delete" class="btn  btn-sm btn-dark">Cancel</button>
+    </div>
+    </div>
+  </div>
+<%- include("partials/footer.ejs") %>
