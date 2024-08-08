@@ -19,6 +19,11 @@ app.use(express.json());
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
+//route to display poems by currently logged in user
+app.get('/my-poems/', async(req, res)=>{
+//to implement this once I add authorization
+
+})
 // Route to fetch all posts
 app.get('/', async (req, res) => {
     const posts = await getAllPosts();
