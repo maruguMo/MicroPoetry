@@ -1,4 +1,7 @@
-  //import { getAllPosts, getPostById, createPost, deletePost, fetchForms, getCommentsByPostId, addComment, getFormDefinition} from '../../database.js';
+
+  import { createQuillEditor } from '/js/quillSetUp.js';
+  import { showDynamicAlert } from '/js/Util.js';
+
   document.addEventListener(`DOMContentLoaded`, ()=>  {
 
     const viewModal = document.getElementById('myModal');
@@ -28,32 +31,10 @@
     const confirmModal = document.getElementById('confirmModal');
     //edit modal initialization
     const editmodal= document.getElementById('editFormModal');
-    //initialize the quill editor with desired fonts
-    const Font=Quill.import('formats/font');
-    Font.whitelist=['Poppins', 'Roboto','Verdana','Open Sans', 'sans-serif'];
-    Quill.register(Font,true);
-    //editor 
-    const quill = new Quill('#editor', {
-      theme: 'snow',
-      modules: {
-        toolbar: [
-          [{ 'font': Font.whitelist }, { 'size': [] }],
-          ['bold', 'italic', 'underline', 'strike'],
-          [{ 'color': [] }, { 'background': [] }],
-          [{ 'script': 'sub' }, { 'script': 'super' }],
-          [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block'],
-          [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-          [{ 'direction': 'rtl' }],
-          [{ 'align': [] }],
-          ['link', 'image', 'video'],
-          ['clean'] // remove formatting button
-        ]
-      }
-    });
 
-      // Set default font to Roboto
-      quill.format('font', 'Poppins');
-  
+    //initialize the quill editor when adding a new post
+
+      createQuillEditor('#editor');
       document.getElementById('post-form').onsubmit = function() {
         document.getElementById('content').value = quill.root.innerHTML;
         console.log(document.getElementById('content').value); // For debugging
@@ -155,27 +136,9 @@
         window.location.reload(); 
       }
 
-      //add edit functionality
-      // Quill editor instance for the edit modal
-      const quillEdit = new Quill('#edit-editor', {
-        theme: 'snow',
-        modules: {
-          toolbar: [
-            [{ 'font': Font.whitelist }, { 'size': [] }],
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'color': [] }, { 'background': [] }],
-            [{ 'script': 'sub' }, { 'script': 'super' }],
-            [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            [{ 'direction': 'rtl' }],
-            [{ 'align': [] }],
-            ['link', 'image', 'video'],
-            ['clean'] // remove formatting button
-          ]
-        }
-      });
 
-      // Function to open the edit modal and populate it with post data
+      const quillEdit= createQuillEditor('#edit-editor');
+
       
       function openEditModal(post) {
         document.getElementById('edit-title').value = post.title;
@@ -338,43 +301,7 @@
     
     });
 
-    /* show dynamic alert instead of the normal borwser alert */
 
-    function showDynamicAlert(message, targetElement) {
-      // Remove any existing alert
-      let existingAlert = document.getElementById('dynamic-alert');
-      if (existingAlert) {
-        existingAlert.remove();
-      }
-    
-      // Create the alert div
-      let alertDiv = document.createElement('div');
-      alertDiv.id = 'dynamic-alert';
-      alertDiv.textContent = message;
-      alertDiv.style.position = 'absolute';
-      alertDiv.style.padding = '10px';
-      alertDiv.style.width="80dwh"
-      alertDiv.style.backgroundColor = '#f44336'; // Red background
-      alertDiv.style.color = 'white';
-      alertDiv.style.borderRadius = '5px';
-      alertDiv.style.zIndex = 1000; // Ensure it's above other content
-      alertDiv.style.boxShadow = '5px 5px 10px rgba(70, 50, 12, 0.7)';
-      alertDiv.style.cursor = 'pointer';
-      alertDiv.style.fontFamily=`'Segoe UI',Serif`;
-    
-      // Position the alert near the target element
-      const rect = targetElement.getBoundingClientRect();
-      alertDiv.style.left = `${rect.left + window.scrollX}px`;
-      alertDiv.style.top = `${rect.bottom + window.scrollY + 5}px`;
-    
-      // Append the alert to the body
-      document.body.appendChild(alertDiv);
-    
-      // Add click event to remove the alert
-      alertDiv.addEventListener('click', function() {
-        alertDiv.remove();
-      });
-    }
     //delete poem via an asynchronous call
     async function delPoem(postId) {
       try {
