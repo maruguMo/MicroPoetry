@@ -1,20 +1,9 @@
 //show dynamic confirm alert
 const dynamicAlertElement ='dynamc-alert';
-const dynamicConfirmElementID ='confirmModal';
-const confirmModalClass='modal';
-const confirmModalSubClass='confirm-modal';
-const confirmButtonsClass='confirm-buttons';
-const buttonFormatClasses='btn  btn-sm btn-dark';
-const deleteID='confirm-delete';
-const cancelID='cancel-delete';
-const messageID='confirm-message';
+
 export function showDynamicConfirm(message){
-  let existingAlert =document.getElementById(dynamicConfirmElement);
-  if(existingAlert){
-    existingAlert.remove();
-  }
-  let alertDiv=document.createElement('div');
-  alertDiv.id(dynamicConfirmElementID);
+
+
 }
 /* show dynamic alert instead of the normal borwser alert */
 export function showDynamicAlert(message, targetElement) {
