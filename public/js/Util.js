@@ -7,7 +7,7 @@ const confirmButtonsClass='confirm-buttons';
 const buttonFormatClasses='btn  btn-sm btn-dark';
 const deleteID='confirm-delete';
 const cancelID='cancel-delete';
-const messageID='onfirm-message';
+const messageID='confirm-message';
 export function showDynamicConfirm(message){
   let existingAlert =document.getElementById(dynamicConfirmElement);
   if(existingAlert){

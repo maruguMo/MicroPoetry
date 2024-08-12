@@ -47,10 +47,9 @@ html, body{
 body{
     position: relative;
     min-height: 100dvh; 
+    /* overflow-y: auto; */
 } *
-body{
-    overflow-y: auto;
-}
+
 .editor{
     overflow-y: auto;
     height: 600px;
@@ -267,6 +266,7 @@ hr{
 }
 .crud{
     display: flex;
+    align-items: center;
     justify-content: center;
     width: 20%;
 
@@ -305,7 +305,7 @@ hr{
 }
 .modal {
     display: none; /* Hidden by default */
-    position: absolute; /* Stay in place */
+    position: fixed; /* Stay in place */
     z-index: 1100; /* Sit on top */
     left: 50%;
     top: 50%;
@@ -335,8 +335,8 @@ hr{
     left: 50%;
     transform: translate(-50%, -50%); /* Center the modal */
     opacity: 1;
-    overflow: auto; /* Enable scroll if needed */
-    font-family: Poppins, Roboto,'Open sans', sans-serif;
+
+    font-family: Poppins, Roboto,'Open Sans', sans-serif;
     font-size:small;  
   }
   .modalSmall{
