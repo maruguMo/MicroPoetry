@@ -2,7 +2,67 @@
 const dynamicAlertElement ='dynamc-alert';
 
 export function showDynamicConfirm(message){
+    // Create the modal container
+    const modal = document.createElement('div');
+    modal.id = 'confirmModal';
+    modal.className = 'modal';
 
+    // Create the modal content
+    const modalContent = document.createElement('div');
+    modalContent.className = 'confirm-modal';
+
+    // Create the message paragraph
+    const messageParagraph = document.createElement('p');
+    messageParagraph.id = 'confirm-message';
+    messageParagraph.textContent = message;
+
+    // Create the buttons container
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.className = 'confirm-buttons';
+
+    // Create the "Yes" button
+    const confirmButton = document.createElement('button');
+    confirmButton.id = 'confirm-delete';
+    confirmButton.className = 'btn btn-sm btn-dark';
+    confirmButton.textContent = 'Yes';
+
+    // Create the "Cancel" button
+    const cancelButton = document.createElement('button');
+    cancelButton.id = 'cancel-delete';
+    cancelButton.className = 'btn btn-sm btn-dark';
+    cancelButton.textContent = 'Cancel';
+
+    // Append buttons to the container
+    buttonsContainer.appendChild(confirmButton);
+    buttonsContainer.appendChild(cancelButton);
+
+    // Append elements to the modal content
+    modalContent.appendChild(messageParagraph);
+    modalContent.appendChild(buttonsContainer);
+
+    // Append the modal content to the modal container
+    modal.appendChild(modalContent);
+
+    // Append the modal to the body
+    document.body.appendChild(modal);
+
+    // Display the modal
+    modal.style.display = 'block';
+
+    // Add event listeners for buttons
+    confirmButton.addEventListener('click', () => {
+        // Handle confirmation (you can customize this)
+        console.log('Confirmed');
+        closeModal();
+    });
+
+    cancelButton.addEventListener('click', closeModal);
+
+    // Function to close the modal
+    function closeModal() {
+        modal.style.display = 'none';
+        document.body.removeChild(modal);
+    }
 
 }
 /* show dynamic alert instead of the normal borwser alert */
