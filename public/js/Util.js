@@ -1,7 +1,7 @@
 //show dynamic confirm alert
 const dynamicAlertElement ='dynamc-alert';
 
-export function showDynamicConfirm(message){
+export function showDynamicConfirm(message ){
     // Create the modal container
     const modal = document.createElement('div');
     modal.id = 'confirmModal';
