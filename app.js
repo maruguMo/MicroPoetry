@@ -1,4 +1,5 @@
 import express from 'express';
+import os from 'os'
 import path from 'path';
 import { fileURLToPath } from 'url';
 import bodyParser from 'body-parser';
@@ -7,7 +8,7 @@ import { getAllPosts, getPostById, createPost, deletePost, fetchForms, getCommen
 } from './database.js';
 
 const app=express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const __filename =fileURLToPath(import.meta.url);
 const __dirname=path.dirname(__filename);
 
@@ -109,6 +110,33 @@ app.post('/unarchive/:id', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-app.listen(PORT, ()=>{
-    console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0',()=>{
+    console.log(`Server is running on http://${getLocalIP()}:${PORT}`);
 });
+// Function to get the local IP address
+function getLocalIP() {
+  const networkInterfaces = os.networkInterfaces();
+  for (const interfaceName in networkInterfaces) {
+    const networkInterface = networkInterfaces[interfaceName];
+
+    // Filter out internal (loopback) and non-IPv4 addresses
+    for (const alias of networkInterface) {
+      if (alias.family === 'IPv4' && !alias.internal && alias.address.startsWith('192.168')) {
+        // Prioritize typical local IP address ranges (e.g., 192.168.x.x)
+        return alias.address;
+      }
+    }
+  }
+
+  // Fallback to the first non-internal IPv4 address if 192.168.x.x is not found
+  for (const interfaceName in networkInterfaces) {
+    const networkInterface = networkInterfaces[interfaceName];
+    for (const alias of networkInterface) {
+      if (alias.family === 'IPv4' && !alias.internal) {
+        return alias.address;
+      }
+    }
+  }
+
+  return 'IP address not found';
+}
