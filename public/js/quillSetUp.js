@@ -20,8 +20,6 @@ const quillOptions = {
       ]
     }
   };
-
-
 Quill.register(Font,true);
 export function createQuillEditor(container, options={}) {
   // ... create Quill instance
