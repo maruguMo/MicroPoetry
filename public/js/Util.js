@@ -65,6 +65,8 @@ export function showDynamicConfirm(message ){
     }
 
 }
+
+
 /* show dynamic alert instead of the normal borwser alert */
 export function showDynamicAlert(message, targetElement) {
     // Remove any existing alert

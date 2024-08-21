@@ -2,7 +2,7 @@
 const Font=Quill.import('formats/font');
 Font.whitelist=['Poppins', 'Roboto','Verdana','Open Sans', 'sans-serif'];
 
-//import Quill from 'https://cdn.quilljs.com/1.3.6/quill.js';
+
 const quillOptions = {
     theme: 'snow',
     modules: {
@@ -20,7 +20,11 @@ const quillOptions = {
       ]
     }
   };
+
+
 Quill.register(Font,true);
+
+
 export function createQuillEditor(container, options={}) {
   // ... create Quill instance
   console.log(options);
