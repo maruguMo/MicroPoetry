@@ -1,3 +1,15 @@
 <%- include("partials/header.ejs") %>
     <h1>this is where we list and define poetry forms</h1>
+    <!-- show the poetry forms here -->
+    <ul id="poetry-forms">
+        <% poetryForms.forEach(form => { %>
+            <li>
+                <div class="card">
+                    <%= form.Title %>
+                    <%= form.Description %>
+                </div>
+            </li>
+        <% });%>
+
+    </ul> 
 <%- include("partials/footer.ejs") %>

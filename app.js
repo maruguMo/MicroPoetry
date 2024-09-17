@@ -12,7 +12,7 @@ import { getAllPosts, getPostById, createPost, deletePost, fetchForms, getCommen
 } from './database.js';
 
 const app=express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const __filename =fileURLToPath(import.meta.url);
 const __dirname=path.dirname(__filename);
 
@@ -40,7 +40,7 @@ app.get('/my-poems/', async(req, res)=>{
 app.get('/', async (req, res) => {
     const posts = await getAllPosts();
     const forms=await fetchForms();
-    res.render('index', { posts, forms});
+    res.render('index.ejs', { posts, forms});
   });
 
 
@@ -77,8 +77,11 @@ app.get('/comments/:postId', async (req, res) => {
 
 
 //route to view poetry forms
-app.get('/poetry-forms', (req, res) => {
-   res.render('poetry-forms');
+app.get('/poetry-forms', async(req, res) => {
+  const poetryForms=await fetchForms();
+  // console.log(forms);
+  console.log(typeof(poetryForms));
+   res.render('poetry-forms',{poetryForms});
  });
 
 
@@ -147,8 +150,8 @@ app.post('/unarchive/:id', async (req, res) => {
 });
 
 
-app.listen(PORT, '0.0.0.0',()=>{
-    console.log(`Server is running on http://${getLocalIP()}:${PORT}`);
+app.listen(PORT,()=>{
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
 
 

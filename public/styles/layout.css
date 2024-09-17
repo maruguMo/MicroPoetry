@@ -86,7 +86,7 @@ body{
 .ql-editor em, .ql-editor i {
     color: #000; /* Darker text color */
 }  
-#Posts{
+.posts{
     text-align: center;
 }
 #modal-title{
