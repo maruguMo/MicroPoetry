@@ -1,53 +1,46 @@
-﻿Abecedarian,Poem where each line or stanza starts with consecutive letters of the alphabet.
-Acrostic,Poem in which the first letters of each line spell out a word or message.
-Alliterisen,Poem that uses alliteration (repetition of consonant sounds) throughout.
-Ballad,"Narrative poem, typically arranged in quatrains with a rhyme scheme of ABAB."
-Blank Verse,Unrhymed poem written in iambic pentameter.
-Cinquain,"Five-line poem with a specific syllable count per line (e.g., 2, 4, 6, 8, 2)."
-Clerihew,"Humorous poem about a person, typically four lines with an AABB rhyme scheme."
-Couplet,"Two lines of verse, often rhyming and having the same meter."
-Concrete,Poem where the text is arranged to form a shape related to the subject.
-Dodoitsu,"Japanese form, typically with 26 syllables in 4 lines, often about work or love."
-Dramatic Monologue,"Poem in the form of a speech, where the speaker reveals their character to a listener."
-Elegy,A reflective poem that laments the dead.
-Epigram,"Short, witty poem, often satirical or humorous."
-Epistle,Poem in the form of a letter.
-Epitaph,Short poem or inscription in memory of someone who has died.
-Etheree,Ten-line poem with a syllable count from 1 to 10 per line.
-Found Poem,Poem created by taking words from other sources and reordering them into poetry.
-Free Verse,"Poem with no consistent meter, rhyme, or structure."
-Ghazal,"Poem consisting of couplets, often dealing with themes of love or loss, with a refrain repeated at the end."
-Haiku,"Japanese poem with a 5-7-5 syllable structure, traditionally about nature."
-Hay(na)ku,"Three-line poem with one word in the first line, two in the second, and three in the third."
-Katauta,Japanese three-line poem with a syllable pattern of 5-7-7.
-Kyrielle,"French form of rhyming quatrains, often with a repeated refrain."
-Lai,Nine-line French form with two rhyming sounds and a pattern of AABAABAAB.
-Limerick,Humorous five-line poem with an AABBA rhyme scheme and a specific meter.
-List Poem,"Poem in the form of a list, often with a recurring theme or concept."
-Lyric,"Poem expressing personal feelings or thoughts, typically in first person."
-Narrative,"Poem that tells a story, with a plot and characters."
-Nonet,Nine-line poem where each line decreases in syllables from 9 to 1.
-Ode,"Formal poem that praises a person, place, thing, or idea."
-Ottava Rima,"Eight-line stanza with an ABABABCC rhyme scheme, often used in narrative poems."
-Pantoum,Poem composed of quatrains where the second and fourth lines of one stanza are repeated in the next.
-Pastoral,Poem idealizing rural life and landscapes.
-Prose Poem,Poem written in prose rather than verse but retains poetic qualities like heightened imagery or emotion.
-Quatern,Four-quatrain poem where a line from the first stanza is repeated in each subsequent stanza.
-Quatrain,"Four-line poem or stanza, often with a rhyme scheme."
-Renga,"Collaborative linked-verse poem, usually in alternating 5-7-5 and 7-7 syllable lines."
-Rhyme Royal,"Seven-line stanza with an ABABBCC rhyme scheme, typically in iambic pentameter."
-Rondel,"13 or 14-line poem with two rhymes and repeated lines, structured as two quatrains followed by a quintet."
-Sapphic,"Four-line poem where each line follows a specific syllabic pattern (11, 11, 11, 5)."
-Sestina,"Poem of six six-line stanzas and a final three-line envoi, with a complex pattern of word repetition."
-Shape Poem,Poem whose visual layout matches its topic or theme.
-Sonnet (English),"14-line poem with a rhyme scheme of ABABCDCDEFEFGG, typically in iambic pentameter."
-Sonnet (Italian),14-line poem with a rhyme scheme of ABBAABBACDCDCD or ABBAABBACDECDE.
-Tanka,"Japanese poem with a 5-7-5-7-7 syllable structure, often focused on nature or emotions."
-Terza Rima,"Poem written in tercets with an interlocking rhyme scheme (ABA, BCB, CDC, etc.)."
-Than-bauk,"Burmese staircasing rhymed poem of three lines with syllables in 4-3-4, where rhymes follow a set pattern."
-Tercet,"Three-line poem or stanza, often with a rhyme scheme."
-Triolet,Eight-line poem with only two rhymes and repeated lines (ABaAabAB).
-Villanelle,"19-line poem with five tercets followed by a quatrain, and repeating rhymes and lines."
-Waka,"Traditional Japanese verse, which includes forms like tanka."
-Zappai,Japanese poem similar to haiku but without strict seasonal or cutting words.
-Zéjel,"Spanish form of stanzas with a triplet rhyme, followed by a refrain."
+﻿Poetry Form,Description,Example
+Abecedarian,Poem where each line or stanza starts with consecutive letters of the alphabet.,"A bird calls, / Butterflies dance, / Clouds drift slowly..."
+Acrostic,Poem in which the first letters of each line spell out a word or message.,"Sunlight warms / Opens the day / New life arises. (Spells ""SON"")"
+Alliterisen,Poem that uses alliteration (repetition of consonant sounds) throughout.,Silent snakes slide swiftly southward.
+Ballad,"Narrative poem, typically arranged in quatrains with a rhyme scheme of ABAB.","""The wind was a torrent of darkness / Among the gusty trees..."""
+Blank Verse,Unrhymed poem written in iambic pentameter.,"""To be or not to be, that is the question..."""
+Cinquain,"Five-line poem with a specific syllable count per line (e.g., 2, 4, 6, 8, 2).",Sunlight / Brightly shining / Warms the cold landscape / Spreading joy over everything.
+Clerihew,"Humorous poem about a person, typically four lines with an AABB rhyme scheme.",Alexander Pope / Was fond of soap. / His cleaning spree / Was quite the key.
+Couplet,"Two lines of verse, often rhyming and having the same meter.","The moon is high, the night is deep / But all I wish is to be asleep."
+Concrete,Poem where the text is arranged to form a shape related to the subject.,Words forming a tree shape to represent nature.
+Dodoitsu,"Japanese form, typically with 26 syllables in 4 lines, often about work or love.",A farmer’s long day / Ends with the sky turning red / Peaceful night settles.
+Dramatic Monologue,"Poem in the form of a speech, where the speaker reveals their character to a listener.","""Is this a dagger which I see before me, / The handle toward my hand?"""
+Elegy,A reflective poem that laments the dead.,"""O Captain! My Captain! our fearful trip is done..."""
+Epigram,"Short, witty poem, often satirical or humorous.","""What is an epigram? A dwarfish whole, / Its body brevity, and wit its soul."""
+Epistle,Poem in the form of a letter.,"""Dear friend, though you are far away / I send these thoughts with you today..."""
+Epitaph,Short poem or inscription in memory of someone who has died.,"""Here lies a man who knew too well / That life is brief, and so farewell."""
+Etheree,Ten-line poem with a syllable count from 1 to 10 per line.,Sky / So vast / Engulfing / Every small thing / Stretching on so high...
+Found Poem,Poem created by taking words from other sources and reordering them into poetry.,Newspaper clipping rearranged into a meaningful poem.
+Ghazal,"Poem consisting of couplets, often dealing with themes of love or loss, with a refrain repeated at the end.","My heart sings for you, oh dear beloved / Every tear, like a song, for you, my beloved."
+Hay(na)ku,"Three-line poem with one word in the first line, two in the second, and three in the third.",Time / slips away / like grains of sand.
+Katauta,Japanese three-line poem with a syllable pattern of 5-7-7.,Winds blow softly now / As the trees sway to and fro / Whispering secrets to me.
+Kyrielle,"French form of rhyming quatrains, often with a repeated refrain.",The sun sets bright at the end of day / And colors the world in golden light.
+Lai,Nine-line French form with two rhyming sounds and a pattern of AABAABAAB.,The moon will rise (A) / Up in the skies (A) / And bring the night (B)...
+List Poem,"Poem in the form of a list, often with a recurring theme or concept.","Apples, oranges, pears, and plums, / Summer fruits and happy hums..."
+Narrative,"Poem that tells a story, with a plot and characters.","""Once upon a midnight dreary, while I pondered, weak and weary..."""
+Nonet,Nine-line poem where each line decreases in syllables from 9 to 1.,"The sunset sky glows in red and gold, / Soft whispers of the evening breeze..."
+Ode,"Formal poem that praises a person, place, thing, or idea.","""Ode to the West Wind,"" praising the power of the wind."
+Ottava Rima,"Eight-line stanza with an ABABABCC rhyme scheme, often used in narrative poems.","Upon a quiet hill, the flowers bloom (A) / And all the world is still in silent sway (B)..."
+Pantoum,Poem composed of quatrains where the second and fourth lines of one stanza are repeated in the next.,The river flows softly and quiet / Beneath the pale blue sky / The leaves fall down in silence...
+Pastoral,Poem idealizing rural life and landscapes.,"Among the hills, the sheep do graze, / In soft and peaceful pastures green..."
+Prose Poem,Poem written in prose rather than verse but retains poetic qualities like heightened imagery or emotion.,"""The sky breaks open, light seeping into every crack in the world, filling the spaces between breaths..."""
+Quatern,Four-quatrain poem where a line from the first stanza is repeated in each subsequent stanza.,The wind whispers across the sea / A sound of ancient memory / The waves crash softly on the shore...
+Renga,"Collaborative linked-verse poem, usually in alternating 5-7-5 and 7-7 syllable lines.",The moon rises high / In the dark and silent night / Lighting up the path...
+Rhyme Royal,"Seven-line stanza with an ABABBCC rhyme scheme, typically in iambic pentameter.","The king sat proudly on his throne, (A) / His kingdom vast and wide was known...(B)"
+Rondel,"13 or 14-line poem with two rhymes and repeated lines, structured as two quatrains followed by a quintet.","""I often feel the winds of change / They blow so softly yet so strange..."""
+Sapphic,"Four-line poem where each line follows a specific syllabic pattern (11, 11, 11, 5).","""The sky is silent in the evening, quiet / The stars are twinkling far beyond our reach now..."""
+Sestina,"Poem of six six-line stanzas and a final three-line envoi, with a complex pattern of word repetition.","The night falls slow and deep, / The stars begin to shine... (repeated words ""night"" and ""stars"")"
+Shape Poem,Poem whose visual layout matches its topic or theme.,Poem shaped like a star to symbolize light.
+Sonnet (English),"14-line poem with a rhyme scheme of ABABCDCDEFEFGG, typically in iambic pentameter.","""Shall I compare thee to a summer's day? / Thou art more lovely and more temperate..."""
+Sonnet (Italian),14-line poem with a rhyme scheme of ABBAABBACDCDCD or ABBAABBACDECDE.,"""When I consider how my light is spent, / Ere half my days, in this dark world and wide..."""
+Tanka,Japanese five-line poem with a 5-7-5-7-7 syllable structure.,The mountain stands tall / Shining in the morning light / Birds sing joyfully...
+Tercet,"Three-line stanza, often rhymed or unrhymed.",The day begins with light / And all the world is bright / Beneath the sun’s great might.
+Terza Rima,"Poem with a rhyme scheme of ABA BCB CDC, etc.",The stars were twinkling in the sky (A) / The moon was shining bright and full (B)...
+Than-bauk,Three-line poem with a staircase rhyme structure.,Birds fly / High in the sky / Why they flee
+Triolet,"Eight-line poem where the first line is repeated at the fourth and seventh lines, following ABaAabAB.",In the garden where roses bloom (A) / Their fragrance fills the morning air (B)...
+Villanelle,"19-line poem with five tercets and a quatrain, with two repeating rhymes and refrains.","""Do not go gentle into that good night, / Old age should burn and rave at close of day..."""

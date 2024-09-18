@@ -25,6 +25,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 app.use(express.static('js'));
 app.use(express.json());
+
 app.use(morgan('combined'));
 
 app.set('view engine', 'ejs');

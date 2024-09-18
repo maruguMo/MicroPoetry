@@ -267,9 +267,17 @@ hr{
 .crud{
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: right;
     width: 20%;
+    border: 1px solid grey;
+}
+.crud-full-width{
+    width: 100%;
+    display: flex;
 
+    align-items: center;
+    justify-content: right;
+    border: 1px solid grey;
 }
 .links{
     box-shadow: 3px 3px 3px grey;
@@ -277,6 +285,12 @@ hr{
     border-radius: 3px;
     padding-left: 7px;
     padding-right: 7px;
+    justify-content:right;
+}
+.card-col{
+    display: flex;
+    flex-direction: column;
+    border-radius: 2%;
 }
 .card{
     display: flex;
@@ -415,6 +429,9 @@ hr{
     margin: 1px;
     background-color: rgb(158, 158, 158);
     /* border-radius: 50%; */
+  }
+  .post{
+    text-align: left;
   }
   .view-post{
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);

@@ -25,7 +25,7 @@ export async function getFormDefinition(Title){
 }
 export async function fetchForms() {
   const db = await getDb();
-  const forms=await db.all('SELECT Title, Description FROM PoetryForms');
+  const forms=await db.all('SELECT Title, Description FROM PoetryForms ORDER BY Title ASC');
   return forms;
 }
 export async function getAllPosts() {
