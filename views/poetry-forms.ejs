@@ -1,5 +1,8 @@
 <%- include("partials/header.ejs") %>
     <h1>Poetry Forms</h1>
+    <div class="menu-bar">
+        <button class="btn btn-primary btn-sm btn-dark" id="openFormModal"><i class="fa-regular fa-square-plus"></i> New Form</button>
+    </div>
     <!-- show the poetry forms here -->
     <ul id="poetry-forms">
         <% poetryForms.forEach(form => { %>
@@ -19,6 +22,55 @@
                 <hr>
             </li>
         <% });%>
-
     </ul> 
+    <!-- poetry forms modal--allows adding and editing poetry forms. Uses quill editor -->
+     <div id="poetryFormModal" class="modal">
+        <div class="mymodal-content">
+            <div class="ModalTitleBar">ADD/EDIT FORM
+                <span class="close" id="closeFormModal">&times;</span>
+            </div>
+            <form id="poetryform" method="post">
+                <div class="mb-3">
+                    <label for="formTitle"> Title</label>
+                    <input class="form-control" type="text" name="title" id="formTitle" placeholder="Enter title of the poetry form" required />
+                </div>
+                <div class="mb-3">
+                    <label for="formDescription">Description</label>
+                    <div  id="formDescription" class="editor"> </div>
+                </div>
+                <input type="hidden" name="description" id="hiddenDescription">
+                <input type="hidden" name="formId" id="formId">
+                <button class="btn btn-primary" id="formSubmitBtn" type="submit">Save</button>
+                <button class="btn btn-secondary" id="rsetButton" type="reset">Reset</button>
+            </form>
+        </div>
+     </div>
 <%- include("partials/footer.ejs") %>
+<script type="module">
+     import { createQuillEditor } from '/js/quillSetUp.js';
+     import { showDynamicAlert } from '/js/Util.js';
+    // add script for this particular module. Will have to refactor some code that can be reused
+    document.addEventListener("DOMContentLoaded", ()=>{
+        const formsModal=document.getElementById('poetryFormModal')
+        const openModal=document.getElementById('openFormModal');
+        const closeFormModal = document.getElementById('closeFormModal');
+        const formsEditor=document.getElementById('formDescription');
+        const formsSubmit=document.getElementById('poetryform')
+        const quill = createQuillEditor(formsEditor)
+        openModal.onclick=()=>{
+            formsModal.style.display = 'block';
+        }
+        closeFormModal.onclick=()=>{
+            formsModal.style.display='none';
+        }
+        formsSubmit.onsubmit=()=>{
+        }
+        
+        //inner html of the quill editor goes to the hiddenDescription element
+        formsSubmit.onsubmit=()=>{
+            console.log(quill.root.innerHTML);
+            document.getElementById('hiddenDescription').innerHTML=quill.root.innerHTML;
+        }
+
+    });
+</script>

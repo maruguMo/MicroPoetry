@@ -280,7 +280,7 @@ hr{
     border: 1px solid grey;
 }
 .links{
-    box-shadow: 3px 3px 3px grey;
+    box-shadow: 3px 3px 3px rgb(78, 55, 55);
     border:1px solid lightgray;
     border-radius: 3px;
     padding-left: 7px;
@@ -434,7 +434,9 @@ hr{
     text-align: left;
   }
   .view-post{
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 5px 5px 10px rgba(182, 223, 212, 0.89);
+    color: #0074d9;
+    /* box-shadow: 5px 5px 10px red */
   }
   .confirm-modal{
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.7);
