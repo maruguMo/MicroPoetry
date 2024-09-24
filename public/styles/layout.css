@@ -102,6 +102,9 @@ form{
     background-color: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+.list-bt-margin{
+    margin-bottom:auto;
+}
 footer {
 
     background-image: url(../images/quillback1.jpeg);
@@ -121,7 +124,7 @@ footer {
     justify-content: space-between;
     align-items: center;
     color: white;
-    margin-top: 10px;
+    margin-top: 20px;
     
 }
 hr{

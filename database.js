@@ -23,6 +23,13 @@ export async function getFormDefinition(Title){
   const db =await getDb();
   return  await db.get('SELECT Description FROM PoetryForms WHERE Title = ?',Title);
 }
+
+export async function getForm(id){
+  const db = await getDb();
+  //asuming there are no errors during the fetch operation
+  return await db.get(`SELECT * FROM PoetryForms WHERE id = ?`, id);
+  
+}
 export async function fetchForms() {
   const db = await getDb();
   const forms=await db.all('SELECT Id, Title, Description FROM PoetryForms ORDER BY Title ASC');
@@ -64,8 +71,19 @@ export async function getPostById(id) {
 }
 
 export async function createPost(title, form, content) {
-  const db = await getDb();
-  await db.run('INSERT INTO posts (title, form, content, views) VALUES (?, ?, ?, ?)', title, form, content, 0);
+
+  try{
+    const db = await getDb();
+
+    const post= await db.run('INSERT INTO posts (title, form, content, views) VALUES (?, ?, ?, ?)', title, form, content, 0);
+    // console.log(post);
+    return post;
+  }
+  catch(error){
+    console.log(error)
+    return error;
+  }
+  
 }
 
 export async function deletePost(id) {

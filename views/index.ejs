@@ -10,7 +10,7 @@
         <div class="ModalTitleBar">NEW POEM
             <span class="close" id="closeFormModal">&times;</span>
         </div>
-        <form id="post-form" action="/post" method="POST">
+        <form id="post-form" action="/new-poem" method="POST">
             <div class="mb-3">
                 <input class="form-control" id="title" name="title" type="text" placeholder="Title"  required />
             </div>
@@ -24,20 +24,21 @@
                 <!-- <input class="form-control" name ="Form" type="text" placeholder="Form"  required/> -->
             </div>
             <div  id="editor" class="editor"> </div>
-            <input type ="hidden" name="content" id="content" />
+            <input type ="hidden" name="content" id="add-content" />
             <button class="button btn btn-secondary btn-sm" type="reset">Reset</button>
-            <button class="button links btn btn-dark btn-sm" type="submit">Submit</button>
+            <button id="saveSubmit" class="button links btn btn-dark btn-sm" type="submit">Submit</button>
         </form>
     </div>
 </div>
 <h5 id="Posts" class="ModalTitle">New Poems</h5>
-    <div class="header-bar">
+<!-- main posts viewer this creates a header bar before the posts are painted -->
+<div class="header-bar">
         <div class="header-title">Title</div>
         <div class="header-form">Form</div>
         <div class="header-views">Views</div>
         <div class="header-date">Posted</div>
-    </div>
-    <ul id="posts" class ="posts">
+</div>
+<ul id="posts" class ="posts">
     <% posts.forEach(post => { %>
         <!-- <hr> -->
         <li>
@@ -87,44 +88,44 @@
         <a class="page-link" href="#">Next</a>
       </li>
     </ul>
-  </nav>
+</nav>
   <!-- View Post Modal -->
-  <div id="myModal" class="modal">
-        <div class="mymodal-content mygrid-container ql-container ql-snow" >
-            <div class="grid-item row-span ModalTitleBar">VIEW POEM <span class="close" id="closeViewModal">&times;</span></div>
-            <div class="grid-item row-span"><h4 id="modal-title"></h4></div>
-            <div class="grid-item row-span padleft"><h6 id="modalForm"></h6></div>
-            <div class="grid-item over-flow padleft modal-small ql-editor" id = "modal-content" ></div>
-            <div class="grid-item over-flow padleft padright poemformback" id="modal-form">Item 4</div>
-            <div class="grid-item row-span">
-                <button class ="links btn btn-dark btn-sm" id="ExpandCollapse">
-                    Add Comment <i id ="plusminus"class="fas fa-plus fa-minus" aria-hidden="true"></i>
-                </button>
-                <!-- <i class="fa fa-minus" aria-hidden="true"></i> -->
-                <div class="commentsContainer collapsible" id="commentsContainer">
-                    
-                    <form id="comment-form">
-                        <input type="hidden" id="comment-post-id" name="postId">
-                        <div class="mb-3">
-                            <label for="author" class="form-label">Author:</label>
-                            <input class="form-control" type="text" id="author" name="author" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="comment-content" class="form-label">Comment</label>
-                            <textarea class="form-control" id="comment-content" name="content" required></textarea>
-                        </div>
-                        <button type="submit" class="links btn btn-dark btn-sm">Submit</button>
-                    </form>
-                </div>
-            </div>
-            <div class="grid-item row-span">
-                <hr class="divider">
-            </div>
-            <div class="grid-item row-span" id="commentsList"></div>
-        </div>
-  </div>  
+<div id="myModal" class="modal">
+      <div class="mymodal-content mygrid-container ql-container ql-snow" >
+          <div class="grid-item row-span ModalTitleBar">VIEW POEM <span class="close" id="closeViewModal">&times;</span></div>
+          <div class="grid-item row-span"><h4 id="modal-title"></h4></div>
+          <div class="grid-item row-span padleft"><h6 id="modalForm"></h6></div>
+          <div class="grid-item over-flow padleft modal-small ql-editor" id = "modal-content" ></div>
+          <div class="grid-item over-flow padleft padright poemformback" id="modal-form">Item 4</div>
+          <div class="grid-item row-span">
+              <button class ="links btn btn-dark btn-sm" id="ExpandCollapse">
+                  Add Comment <i id ="plusminus"class="fas fa-plus fa-minus" aria-hidden="true"></i>
+              </button>
+              <!-- <i class="fa fa-minus" aria-hidden="true"></i> -->
+              <div class="commentsContainer collapsible" id="commentsContainer">
+                  
+                  <form id="comment-form">
+                      <input type="hidden" id="comment-post-id" name="postId">
+                      <div class="mb-3">
+                          <label for="author" class="form-label">Author:</label>
+                          <input class="form-control" type="text" id="author" name="author" required>
+                      </div>
+                      <div class="mb-3">
+                          <label for="comment-content" class="form-label">Comment</label>
+                          <textarea class="form-control" id="comment-content" name="content" required></textarea>
+                      </div>
+                      <button type="submit" class="links btn btn-dark btn-sm">Submit</button>
+                  </form>
+              </div>
+          </div>
+          <div class="grid-item row-span">
+              <hr class="divider">
+          </div>
+          <div class="grid-item row-span" id="commentsList"></div>
+      </div>
+</div>  
   <!-- Edit Post Modal -->
-  <div id="editFormModal" class="modal">
+<div id="editFormModal" class="modal">
     <div class="mymodal-content">
         <div class="ModalTitleBar">EDIT POEM
             <span class="close" id="closeEditFormModal">&times;</span>
@@ -137,7 +138,7 @@
                 <select id="edit-form" name="form" required>
                     <!-- Options will be populated from the database -->
                     <% forms.forEach(function(form) { %>
-                      <option value="<%= form %>"><%= form %></option>
+                      <option value="<%= form.Title %>"><%= form.Title %></option>
                     <% }); %>
                 </select>
             </div>
@@ -160,53 +161,68 @@
         <div class="post" id="archived-posts-list"></div>
       </div>
     </div>
-  </div>
+</div>
 
-  <div id="confirmModal" class="modal">
-    <div class="confirm-modal">
-      <p id="confirm-message">Are you sure you want to delete this poem?</p>
-      <div class="confirm-buttons">
-        <button id="confirm-delete" class="btn  btn-sm btn-dark">Yes</button>
-        <button id="cancel-delete" class="btn  btn-sm btn-dark">Cancel</button>
-    </div>
-    </div>
+<div id="confirmModal" class="modal">
+  <div class="confirm-modal">
+    <p id="confirm-message">Are you sure you want to delete this poem?</p>
+    <div class="confirm-buttons">
+      <button id="confirm-delete" class="btn  btn-sm btn-dark">Yes</button>
+      <button id="cancel-delete" class="btn  btn-sm btn-dark">Cancel</button>
   </div>
+  </div>
+</div>
+
 <%- include("partials/footer.ejs") %>
+
 <script type="module">
     
   import { createQuillEditor } from '/js/quillSetUp.js';
-  import { showDynamicAlert } from '/js/Util.js';
+  import { showDynamicAlert, delPoem } from '/js/Util.js';
 
-    document.addEventListener(`DOMContentLoaded`, ()=>  {
+  document.addEventListener(`DOMContentLoaded`, ()=>  {
 
-    const viewModal = document.getElementById('myModal');
-    //viewmodal declarations  
-    const closeViewModalBtn = document.getElementById('closeViewModal');
-    const modalTitle = document.getElementById('modal-title');
-    const modalForm = document.getElementById('modal-form');
-    const modalContent = document.getElementById('mymodal-content');
-    const commentsSection = document.getElementById('commentsList');
-    const commentForm = document.getElementById('comment-form');
-    const commentPostIdInput = document.getElementById('comment-post-id');
-    //view modal comments toggling
-    const expandComments=document.getElementById('ExpandCollapse');
-    const div = document.getElementById('commentsContainer');
-    const facont=document.getElementById('plusminus');
-    //Archived modal code
-    const openArchivedPostsModal = document.getElementById('poemarchives');
-    const archivedPostsModal = document.getElementById('archivedPostsModal');
-    const closeArchivedPostsModal = document.getElementById('closeArchivedPostsModal');
-    const archivedPostsList = document.getElementById('archived-posts-list');
-    // Form Modal functionality
-    const formModal = document.getElementById('formModal');
-    const openFormModalBtn = document.getElementById('openFormModal');
-    const closeFormModalBtn = document.getElementById('closeFormModal');
-    const body = document.querySelector('body');
-    //confirm modal initialization
-    const confirmModal = document.getElementById('confirmModal');
-    //edit modal initialization
-    const editmodal= document.getElementById('editFormModal');
-    const addPostEditor=document.getElementById('#editor');
+  //#region viewmodal declarations  
+      const viewModal = document.getElementById('myModal');
+      const closeViewModalBtn = document.getElementById('closeViewModal');
+      const modalTitle = document.getElementById('modal-title');
+      const modalForm = document.getElementById('modal-form');
+      const modalContent = document.getElementById('mymodal-content');
+      const commentsSection = document.getElementById('commentsList');
+      const commentForm = document.getElementById('comment-form');
+      const commentPostIdInput = document.getElementById('comment-post-id');
+    //#endregion
+  
+  //#region view modal comments toggling declarations
+      const expandComments=document.getElementById('ExpandCollapse');
+      const div = document.getElementById('commentsContainer');
+      const facont=document.getElementById('plusminus');
+    //#endregion
+    
+  //#region Archived modal declarations
+      const openArchivedPostsModal = document.getElementById('poemarchives');
+      const archivedPostsModal = document.getElementById('archivedPostsModal');
+      const closeArchivedPostsModal = document.getElementById('closeArchivedPostsModal');
+      const archivedPostsList = document.getElementById('archived-posts-list');
+    //#endregion
+    
+  //#region new poem modal declarations
+      const formModal = document.getElementById('formModal');
+      const openFormModalBtn = document.getElementById('openFormModal');
+      const closeFormModalBtn = document.getElementById('closeFormModal');
+      const body = document.querySelector('body');
+    //#endregion
+
+  //#region confirm modal declarations
+      const confirmModal = document.getElementById('confirmModal');
+    //#endregion
+
+  //#region edit modal initialization
+      const editmodal= document.getElementById('editFormModal');
+    //#endregion
+    
+  //#region  new post functionality
+      const addPostEditor=document.getElementById('#editor');
 
       //initialize the quill editor when adding a new post
       const newPostQuill = createQuillEditor(document.getElementById('editor'),undefined);
@@ -215,30 +231,24 @@
         formModal.style.display = 'block';
 
       }
-
+      const saveBtn = document.getElementById('saveSubmit');
+      
+      saveBtn.addEventListener('click', ()=>{
+        const content=document.getElementById('add-content');
+        content.value = newPostQuill.root.innerHTML;
+      })
       //when submitted make content of the quill editor go to the hidden element called content
       document.getElementById('post-form').onsubmit = function() {
-        document.getElementById('content').value = quill.root.innerHTML;
+        document.getElementById('add-content').value = newPostQuill.root.innerHTML;
+
       }
 
       closeFormModalBtn.onclick = function() {
         formModal.style.display = 'none';
       }
-
-      expandComments.addEventListener('click', ()=>{
-        div.classList.toggle('expanded');
-        div.classList.toggle('collapsible');
-        if (div.classList.contains('expanded')) {
-          facont.classList.remove('fa-plus');
-          facont.classList.add('fa-minus');
-          //div.style.display = 'block';
-        } else {
-          facont.classList.add('fa-plus');
-          facont.classList.remove('fa-minus');
-          //div.style.display = 'none';
-        }
-      });
-
+    //#endregion
+    
+  //#region VIEW POST FUNCTIONALITY
     /*
       View Post Modal functionality
       View post by clicking on the post link 
@@ -285,7 +295,19 @@
           </div>
         `).join('');
       }   
-
+      expandComments.addEventListener('click', ()=>{
+        div.classList.toggle('expanded');
+        div.classList.toggle('collapsible');
+        if (div.classList.contains('expanded')) {
+          facont.classList.remove('fa-plus');
+          facont.classList.add('fa-minus');
+          //div.style.display = 'block';
+        } else {
+          facont.classList.add('fa-plus');
+          facont.classList.remove('fa-minus');
+          //div.style.display = 'none';
+        }
+      });
       //post comments on the view modal
       commentForm.onsubmit = async function(event) {
         event.preventDefault();
@@ -305,34 +327,14 @@
         div.classList.toggle('expanded');
         div.classList.toggle('collapsible');
       };
-  
-
       // Close the view post modal when clicking the close button
       closeViewModalBtn.onclick = function() {
         viewModal.style.display = 'none';
         window.location.reload(); 
       }
-
-      const editPostEditor=document.getElementById('edit-editor')
-      const quillEdit= createQuillEditor(editPostEditor);
-
-      
-      function openEditModal(post) {
-        document.getElementById('edit-title').value = post.title;
-        document.getElementById('edit-form').value = post.form;
-        quillEdit.root.innerHTML = post.content;
-        document.getElementById('edit-post-id').value = post.id;
-        editmodal.style.display='block';
-        //document.getElementById('editFormModal').style.display = 'block';
-      }
-      // Close the edit modal
-      document.getElementById('closeEditFormModal').onclick = () => {
-        document.getElementById('editFormModal').style.display = 'none';
-      };
-      // Handle form submission
-      document.getElementById('edit-post-form').onsubmit = () => {
-        document.getElementById('edit-content').value = quillEdit.root.innerHTML;
-      };
+    //#endregion
+  
+  //#region ARCHIVE POST FUNCTIONALITY  
       //add event listeners to archive buttons
       document.querySelectorAll('.archive-post').forEach(btn =>{
         btn.addEventListener('click', async(event)=>{
@@ -359,6 +361,11 @@
           });
         });
       });
+  //#endregion
+  
+  //#region EDIT POST MODAL FUNCTIONALITY
+      const editPostEditor=document.getElementById('edit-editor')
+      const quillEdit= createQuillEditor(editPostEditor);
       // Add event listeners to edit buttons
       document.querySelectorAll('.edit-post').forEach(button => {
         button.addEventListener('click', async (event) => {
@@ -372,9 +379,28 @@
           openEditModal(post);
         });
       });      
-
+      function openEditModal(post) {
+        document.getElementById('edit-title').value = post.title;
+        document.getElementById('edit-form').value = post.form;
+        quillEdit.root.innerHTML = post.content;
+        document.getElementById('edit-post-id').value = post.id;
+        editmodal.style.display='block';
+        //document.getElementById('editFormModal').style.display = 'block';
+      }
+      // Close the edit modal
+      document.getElementById('closeEditFormModal').onclick = () => {
+        document.getElementById('editFormModal').style.display = 'none';
+      };
+      // Handle form submission
+      document.getElementById('edit-post-form').onsubmit = () => {
+        document.getElementById('edit-content').value = quillEdit.root.innerHTML;
+      };
+//#endregion
+  
+  //#region ARCHIVAL MODAL FUNCTIONALITY      
       // Open modal to show archived posts
       openArchivedPostsModal.addEventListener('click', async () => {
+
         archivedPostsList.innerHTML = ''; // Clear existing content
         try {
           
@@ -435,7 +461,9 @@
           }
         }
       });
-
+//#endregion
+      
+  //#region GENERAL MODAL FUNCTIONALITY
       // Close modal if clicked outside content
       window.addEventListener('click', (e) => {
         if (e.target === archivedPostsModal) {
@@ -459,6 +487,9 @@
         }
         
       };
+//#endregion
+
+  //#region DELETE MODAL FUNCTIONALITY
       //delete poem
       document.querySelectorAll(".del-post").forEach(btn=>{
           btn.addEventListener('click',async(event)=>{
@@ -486,36 +517,10 @@
                 showDynamicAlert("Delete cancelled!",btn); 
                 window.location.reload();
             });
+
           });
       });
-    
-    });
-
-
-    //delete poem via an asynchronous call
-    async function delPoem(postId) {
-      try {
-        const response = await fetch(`/delete/${postId}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-    
-        if (!response.ok) {
-          throw new Error(`Network response was not ok: ${response.statusText}`);
-        }
-    
-        // Handle successful deletion, e.g., update UI
-        console.log('Post deleted successfully');
-        // Redirect if necessary (could be done here or elsewhere)
-        // window.location.href = "/";
-      } catch (error) {
-        console.error('Error deleting post:', error);
-        // Handle error, e.g., display error message to user
-      }
-    }
-    
-
-    
+  //#endregion
+  });
+  
 </script>

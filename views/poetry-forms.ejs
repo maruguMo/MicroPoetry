@@ -4,15 +4,15 @@
         <button class="btn btn-primary btn-sm btn-dark" id="openFormModal"><i class="fa-regular fa-square-plus"></i> New Form</button>
     </div>
     <!-- show the poetry forms here -->
-    <ul id="poetry-forms">
+    <ul id="poetry-forms" class ="list-bt-margin">
         <% poetryForms.forEach(form => { %>
             <li>
-                <div class="card-col over-flow">
+                <div class="card-col over-flow ql-container padleft padright">
                     <h6>
                         <%= form.Title %>
                     </h6>
                     <span >
-                        <%= form.Description %>
+                        <%- form.Description %>
                     </span>
                 </div>
                 <div class="crud-full-width">
@@ -29,7 +29,7 @@
             <div class="ModalTitleBar">ADD/EDIT FORM
                 <span class="close" id="closeFormModal">&times;</span>
             </div>
-            <form id="poetryform" method="post">
+            <form id="poetryform" action="/poetry-forms" method="POST" >
                 <div class="mb-3">
                     <label for="formTitle"> Title</label>
                     <input class="form-control" type="text" name="title" id="formTitle" placeholder="Enter title of the poetry form" required />
@@ -39,7 +39,7 @@
                     <div  id="formDescription" class="editor"> </div>
                 </div>
                 <input type="hidden" name="description" id="hiddenDescription">
-                <input type="hidden" name="formId" id="formId">
+                <input type="hidden" name="id" id="formId">
                 <button class="btn btn-primary" id="formSubmitBtn" type="submit">Save</button>
                 <button class="btn btn-secondary" id="rsetButton" type="reset">Reset</button>
             </form>
@@ -47,30 +47,58 @@
      </div>
 <%- include("partials/footer.ejs") %>
 <script type="module">
-     import { createQuillEditor } from '/js/quillSetUp.js';
-     import { showDynamicAlert } from '/js/Util.js';
+    import { createQuillEditor } from '/js/quillSetUp.js';
+    import { showDynamicAlert } from '/js/Util.js';
     // add script for this particular module. Will have to refactor some code that can be reused
     document.addEventListener("DOMContentLoaded", ()=>{
+        //#region DECLARATIONS
         const formsModal=document.getElementById('poetryFormModal')
         const openModal=document.getElementById('openFormModal');
         const closeFormModal = document.getElementById('closeFormModal');
         const formsEditor=document.getElementById('formDescription');
         const formsSubmit=document.getElementById('poetryform')
+        //#endregion
         const quill = createQuillEditor(formsEditor)
+
         openModal.onclick=()=>{
-            formsModal.style.display = 'block';
+            openFormModal(undefined,false, openModal);
         }
         closeFormModal.onclick=()=>{
+
             formsModal.style.display='none';
         }
-        formsSubmit.onsubmit=()=>{
-        }
-        
         //inner html of the quill editor goes to the hiddenDescription element
         formsSubmit.onsubmit=()=>{
             console.log(quill.root.innerHTML);
-            document.getElementById('hiddenDescription').innerHTML=quill.root.innerHTML;
+            document.getElementById('hiddenDescription').value=quill.root.innerHTML;
+            window.location.reload();
         }
 
+        //edit post
+        document.querySelectorAll('.edit-post').forEach(btn =>{
+            btn.addEventListener('click',async(event) =>{
+                const formid = btn.getAttribute('data-id');
+                const resp= await fetch(`/poetryforms/${formid}`);
+                const form = await resp.json();
+                console.log(form);
+                openFormModal(form, true, btn);
+            });
+        });
+        function openFormModal(form,editMode=true, target=document.body){
+            if(editMode===true){
+                if (form===undefined){
+                    //some error occured therefore console log it and show the error alert
+                    showDynamicAlert("There was a problem performing this action",target);
+                }else{
+                    //show the modal here
+                    document.getElementById('formTitle').value=form.Title;
+                    document.getElementById('formId').value=form.id;
+                    quill.root.innerHTML=form.Description;
+                    formsModal.style.display = 'block';
+                }
+            }else{
+                formsModal.style.display = 'block';
+            }
+        }
     });
 </script>

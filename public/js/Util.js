@@ -103,3 +103,26 @@ export function showDynamicAlert(message, targetElement) {
       alertDiv.remove();
     });
   }
+//delete poem via an asynchronous call
+export async function delPoem(postId) {
+  try {
+    const response = await fetch(`/delete/${postId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response.statusText}`);
+    }
+
+    // Handle successful deletion, e.g., update UI
+    console.log('Post deleted successfully');
+    // Redirect if necessary (could be done here or elsewhere)
+    // window.location.href = "/";
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    // Handle error, e.g., display error message to user
+  }
+}

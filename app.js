@@ -8,7 +8,8 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 
 import { getAllPosts, getPostById, createPost, deletePost, fetchForms, getCommentsByPostId, addComment, 
-  getFormDefinition, updatePost,  archivePost, getArchivedPosts,unArchivePost, updateForms, createForm
+  getFormDefinition, updatePost,  archivePost, getArchivedPosts,unArchivePost, updateForms, createForm,
+  getForm
 } from './database.js';
 
 const app=express();
@@ -26,7 +27,7 @@ app.use(express.static('public'));
 app.use(express.static('js'));
 app.use(express.json());
 
-app.use(morgan('combined'));
+// app.use(morgan('combined'));
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
@@ -68,14 +69,58 @@ app.get('/formDescription/:formName', async(req,res) =>{
     res.json(formDesc);
 });
 
+//fetch form via its id
+app.get('/poetryforms/:id', async(req, res)=>{
+  //needs to add error handling so that the application degrades gracefully
+  const id=parseInt(req.params.id);
+  const form= await getForm(id);
+  res.status(200).json(form);
+
+})
 app.patch('/poetryforms/:id', async(req, res)=>{
   
   const id=parseInt(req.params.id);
   const desc = req.body.description;
   const title=req.body.title;
-  const form= await updateForms(title,desc);
+  const form= await updateForms(title,desc,id);
   res.status(200).json(form);
 })
+
+//route to  fetch poetry formss
+app.post('/poetry-forms', async(req,res) =>{
+  const id=parseInt(req.body.id);
+  const desc=req.body.description;
+  const title=req.body.title;
+  /* 
+    if req.body.id is NaN then this is an insert 
+    i.e. create a new poetry form else update for
+    corresponding form id 
+  */
+  if(isNaN(id)){
+    try{
+      await createForm(title, desc);
+      res.status(200).redirect('/poetry-forms');
+    }catch(error){
+      console.log("error occured", error);
+      res.status(500).redirect("/");
+    }
+  }else{
+    try{
+      const form= await updateForms(title, desc,id);
+      res.status(200).redirect('/poetry-forms')
+      
+    }catch(error){
+      console.log("error occured", error);
+      res.status(500).redirect("/");
+    }
+  }
+});
+
+//route to view poetry forms
+app.get('/poetry-forms', async(req, res) => {
+  const poetryForms=await fetchForms();
+  res.render('poetry-forms.ejs',{poetryForms});
+ });
 
   // Route to fetch comments for a post
 app.get('/comments/:postId', async (req, res) => {
@@ -85,18 +130,12 @@ app.get('/comments/:postId', async (req, res) => {
   });
 
 
-//route to view poetry forms
-app.get('/poetry-forms', async(req, res) => {
-  const poetryForms=await fetchForms();
-  // console.log(forms);
-  console.log(typeof(poetryForms));
-   res.render('poetry-forms',{poetryForms});
- });
-
-
 // Route to create a new post
-app.post('/post', async (req, res) => {
-    const { title, form, content } = req.body;
+app.post('/new-poem', async (req, res) => {
+    const title=req.body.title;
+    const form=req.body.form;
+    const content=req.body.content;
+
     await createPost(title, form, content);
     res.redirect('/');
   });
