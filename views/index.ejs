@@ -18,7 +18,7 @@
                 <select id="form" name="form" required>
                     <!-- Options will be populated from the database -->
                     <% forms.forEach(function(form) { %>
-                      <option value="<%= form %>"><%= form %></option>
+                      <option value="<%= form.Title %>"><%= form.Title %></option>
                     <% }); %>
                   </select>
                 <!-- <input class="form-control" name ="Form" type="text" placeholder="Form"  required/> -->
@@ -172,7 +172,7 @@
     </div>
   </div>
 <%- include("partials/footer.ejs") %>
-<script>
+<script type="module">
     
   import { createQuillEditor } from '/js/quillSetUp.js';
   import { showDynamicAlert } from '/js/Util.js';
@@ -207,13 +207,13 @@
     //edit modal initialization
     const editmodal= document.getElementById('editFormModal');
     const addPostEditor=document.getElementById('#editor');
-    //initialize the quill editor when adding a new post
 
-      const quill = createQuillEditor(addPostEditor);
-
+      //initialize the quill editor when adding a new post
+      const newPostQuill = createQuillEditor(document.getElementById('editor'),undefined);
       //show new poem modal
       openFormModalBtn.onclick = ()=> {
         formModal.style.display = 'block';
+
       }
 
       //when submitted make content of the quill editor go to the hidden element called content
@@ -313,7 +313,7 @@
         window.location.reload(); 
       }
 
-      const editPostEditor=document.getElementById('#edit-editor')
+      const editPostEditor=document.getElementById('edit-editor')
       const quillEdit= createQuillEditor(editPostEditor);
 
       
@@ -377,25 +377,38 @@
       openArchivedPostsModal.addEventListener('click', async () => {
         archivedPostsList.innerHTML = ''; // Clear existing content
         try {
+          
           const response = await fetch('/archived-posts');
           const archivedPosts = await response.json();
 
-          archivedPosts.forEach(post => {
-            const postDiv = document.createElement('div');
-            postDiv.classList.add('archived-post');
-            postDiv.classList.add('container');
-            postDiv.innerHTML = `
-              <div class=" row archiveheader">
-                <span class="col"><b>${post.title}</span></b>
-                <span class="col">Form: ${post.form}</span>
-              </div>
-              <span class ="padleft">${post.content}</span>
-              <button class="unarchive-button links btn btn-dark btn-sm" data-id="${post.id}">Restore</button>
-              <hr>
-            `;
-            archivedPostsList.appendChild(postDiv);
+          //check if there are any archived posts/poems
+          if (archivedPosts.length > 0){
+
+            console.log(archivedPosts);
+            archivedPosts.forEach(post => {
+              const postDiv = document.createElement('div');
+              postDiv.classList.add('archived-post');
+              postDiv.classList.add('container');
+              postDiv.innerHTML = `
+                <div class=" row archiveheader">
+                  <span class="col"><b>${post.title}</span></b>
+                  <span class="col">Form: ${post.form}</span>
+                </div>
+                <span class ="padleft">${post.content}</span>
+                <button class="unarchive-button links btn btn-dark btn-sm" data-id="${post.id}">Restore</button>
+                <hr>
+              `;
+              archivedPostsList.appendChild(postDiv);
           });
 
+        }else{
+
+          const postsHead=document.createElement("h4");
+          // postsHead.classList.add(''); ---add some classes
+          postsHead.innerText="There are 0 archived poems";
+          archivedPostsList.appendChild(postsHead);
+
+        }
           archivedPostsModal.style.display = 'block';
         } catch (error) {
           console.error('Error fetching archived posts:', error);

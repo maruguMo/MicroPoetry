@@ -25,8 +25,18 @@ export async function getFormDefinition(Title){
 }
 export async function fetchForms() {
   const db = await getDb();
-  const forms=await db.all('SELECT Title, Description FROM PoetryForms ORDER BY Title ASC');
+  const forms=await db.all('SELECT Id, Title, Description FROM PoetryForms ORDER BY Title ASC');
   return forms;
+}
+export async function updateForms(Title, Description, Id){
+  const db =await getDb();
+  await db.run('UPDATE PoetryForms SET Title = ?, Description= ? WHERE id = ?', Title, Description, Id);
+  return await db.get('SELECT * FROM PoetryForms WHERE id = ?',Id);
+}
+
+export async function createForm(Title, Description){
+  const db=await getDb();
+  return  db.run(`INSERT INTO PoetryForms(Title, Description) VALUES(?,?)`,Title, Description);
 }
 export async function getAllPosts() {
   const db = await getDb();
@@ -62,6 +72,24 @@ export async function deletePost(id) {
   const db = await getDb();
   await db.run('DELETE FROM posts WHERE id = ?', id);
 }
+export async function updatePost(id, title, form, content) {
+  const db = await getDb();
+  await db.run('UPDATE posts SET title = ?, form = ?, content = ?, edit_timestamp = CURRENT_TIMESTAMP WHERE id = ?', title, form, content, id);
+}
+export async function archivePost(id){
+  const db=await getDb();
+  await db.run('UPDATE posts SET archived = 1 WHERE id =?', id);
+}
+export async function getArchivedPosts(){
+  const db=await getDb();
+  return await db.all('SELECT * FROM posts WHERE archived =1')
+}
+
+export async function unArchivePost(id){
+  const db =await getDb();
+  await db.run('UPDATE posts SET archived = 0 WHERE id =?', id);
+}
+
 async function setup() {
   const db = await getDb();
   await db.exec(`
@@ -102,22 +130,5 @@ async function setup() {
   `);
 }
 
-export async function updatePost(id, title, form, content) {
-  const db = await getDb();
-  await db.run('UPDATE posts SET title = ?, form = ?, content = ?, edit_timestamp = CURRENT_TIMESTAMP WHERE id = ?', title, form, content, id);
-}
-export async function archivePost(id){
-  const db=await getDb();
-  await db.run('UPDATE posts SET archived = 1 WHERE id =?', id);
-}
-export async function getArchivedPosts(){
-  const db=await getDb();
-  return await db.all('SELECT * FROM posts WHERE archived =1')
-}
-
-export async function unArchivePost(id){
-  const db =await getDb();
-  await db.run('UPDATE posts SET archived = 0 WHERE id =?', id);
-}
 setup();
 export default dbPromise;

@@ -25,13 +25,13 @@ const quillOptions = {
 Quill.register(Font,true);
 
 
-export function createQuillEditor(container, options={}) {
+export function createQuillEditor(qlcontainer, options={}) {
   // ... create Quill instance
-  console.log(options);
+  // console.log(options);
   if (typeof options ==='undefined' || Object.keys(options).length ===0){
     options=quillOptions;
   }
-  const quill = new Quill(container, options);
+  const quill = new Quill(qlcontainer, options);
   quill.format('font','Poppins');
   return quill;
 }

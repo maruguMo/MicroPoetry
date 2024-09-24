@@ -8,7 +8,7 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 
 import { getAllPosts, getPostById, createPost, deletePost, fetchForms, getCommentsByPostId, addComment, 
-  getFormDefinition, updatePost,  archivePost, getArchivedPosts,unArchivePost
+  getFormDefinition, updatePost,  archivePost, getArchivedPosts,unArchivePost, updateForms, createForm
 } from './database.js';
 
 const app=express();
@@ -68,6 +68,14 @@ app.get('/formDescription/:formName', async(req,res) =>{
     res.json(formDesc);
 });
 
+app.patch('/poetryforms/:id', async(req, res)=>{
+  
+  const id=parseInt(req.params.id);
+  const desc = req.body.description;
+  const title=req.body.title;
+  const form= await updateForms(title,desc);
+  res.status(200).json(form);
+})
 
   // Route to fetch comments for a post
 app.get('/comments/:postId', async (req, res) => {
