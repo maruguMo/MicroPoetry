@@ -1,5 +1,5 @@
 <%- include("partials/header.ejs") %>
-    <h1>Poetry Forms</h1>
+    <h3>Poetry Forms</h3>
     <div class="menu-bar">
         <button class="btn btn-primary btn-sm btn-dark" id="openFormModal"><i class="fa-regular fa-square-plus"></i> New Form</button>
     </div>
@@ -10,6 +10,7 @@
                 <div class="card-col over-flow ql-container padleft padright">
                     <h6>
                         <%= form.Title %>
+                        <button><i class="fa fa-expand" aria-hidden="true"></i></button>
                     </h6>
                     <span >
                         <%- form.Description %>
