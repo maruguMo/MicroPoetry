@@ -14,6 +14,7 @@ import { getAllPosts, getPostById, createPost, deletePost, fetchForms, getCommen
 
 const app=express();
 const PORT = process.env.PORT || 3001;
+
 const __filename =fileURLToPath(import.meta.url);
 const __dirname=path.dirname(__filename);
 
@@ -27,7 +28,7 @@ app.use(express.static('public'));
 app.use(express.static('js'));
 app.use(express.json());
 
-// app.use(morgan('combined'));
+app.use(morgan('combined'));
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
