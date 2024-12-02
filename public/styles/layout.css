@@ -209,12 +209,14 @@ hr{
     flex-direction: row;
     padding-left: 5px;
     justify-content: space-between;
-    font-size:14px;
+    font-size:small;
 /*     font-family: 'Roboto', 'Open Sans', Arial, sans-serif;
     font-weight:normal; */
 }
 .date-posted{
-    align-items: flex-start;
+    align-items: flex-end;
+    font-size: small;
+    text-align: right;
     width: 20%;
 }
 .title{
@@ -252,43 +254,48 @@ hr{
 }
 .header-date{
     width: 20%;
-    text-align: left;
+    text-align: center;
+    font-size: small;
 }
 .header-title{
     width: 40%;
+    font-size: small;
 }
 .header-form{
     display: flex;
     align-items: flex-start;
     width: 20%;
+    font-size: small;
 }
 .header-views {
     text-align: center;
     margin-left: auto;
     width: 20%;
+    font-size: small;
 }
 .crud{
     display: flex;
     align-items: center;
-    justify-content: right;
+    justify-content: flex-end;
     width: 20%;
-    border: 1px solid grey;
+    padding-left: 5dvw;
+    /* border: 1px solid grey; */
 }
 .crud-full-width{
     width: 100%;
     display: flex;
-
     align-items: center;
-    justify-content: right;
-    border: 1px solid grey;
+    justify-content:flex-end;
+    /* border: 1px solid grey; */
 }
 .links{
-    box-shadow: 3px 3px 3px rgb(78, 55, 55);
-    border:1px solid lightgray;
-    border-radius: 3px;
+    /* box-shadow: 3px 3px 3px rgb(78, 55, 55); */
+    /* border:1px solid lightgray; */
+    /* border-radius: 3px; */
     padding-left: 7px;
     padding-right: 7px;
-    justify-content:right;
+    text-align: left;
+    font-size: small;
 }
 .card-col{
     display: flex;
@@ -437,7 +444,7 @@ hr{
     text-align: left;
   }
   .view-post{
-    box-shadow: 5px 5px 10px rgba(182, 223, 212, 0.89);
+    /* box-shadow: 5px 5px 10px rgba(182, 223, 212, 0.89); */
     color: #0074d9;
     /* box-shadow: 5px 5px 10px red */
   }

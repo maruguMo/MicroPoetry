@@ -34,7 +34,7 @@
 <!-- main posts viewer this creates a header bar before the posts are painted -->
 <div class="header-bar">
         <div class="header-title">Title</div>
-        <div class="header-form">Form</div>
+        <div class="header-form px-4">Form</div>
         <div class="header-views">Views</div>
         <div class="header-date">Posted</div>
 </div>
@@ -43,17 +43,18 @@
         <!-- <hr> -->
         <li>
             <div class="card post">
-                <div class="content">
-                    <div class="title">
-                        <a href="#" class="view-post position-relative" data-id="<%= post.id %>">
-                            <span><%= post.title %>
-                                <span class="badge bg-danger notify-white">
-                                    <%= post.comments_count %>
-                                </span>  
-                            </span>
+                <div class="content py-0">
+                    <div class="title position-relative">
+                        <a href="#" class=" btn btn-sm view-post position-relative" data-id="<%= post.id %>">
+                            <span><%= post.title %></span>
+                            <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger badge notify-white">
+                              <%= post.comments_count %>
+                            </span> 
                         </a>
+
                     </div>
-                    <div class="Poemform">
+
+                    <div class="Poemform px-2">
                         <span data-formName="<%= post.form %>"><%= post.form %></span>
                     </div>
                     <div class="views">
@@ -68,9 +69,9 @@
                     </div>
                 </div>
                 <div class="crud btn-group">
-                    <button title ="Edit" class="edit-post links btn btn-secondary btn-sm" data-id="<%= post.id %>"><i class="far fa-edit" aria-hidden="true"></i></i></button>
-                    <button title ="Archive" class="archive-post links btn btn-light btn-sm" data-id="<%= post.id %>"><i class="fas fa-archive" aria-hidden="true"></i></button>
-                    <div title ="Delete" class="del-post links btn  btn-light btn-sm" data-id="<%= post.id %>"><i class="fas fa-backspace" aria-hidden="true"></i></button>
+                    <button title ="Edit" class="edit-post links btn btn-sm btn-light" data-id="<%= post.id %>">Edit</button>
+                    <button title ="Archive" class="archive-post links btn btn-sm btn-light" data-id="<%= post.id %>">Archive</button>
+                    <button title ="Delete" class="del-post links btn btn-sm btn-light" data-id="<%= post.id %>">Delete</button>
                 </div>
             </div>
         </li>
