@@ -7,13 +7,25 @@ import { fileURLToPath } from 'url';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 
+import bcrypt from "bcrypt";
+import passport from "passport";
+import session from "express-session";
+import  env from "dotenv";
+import { Strategy as LocalStrategy } from 'passport-local';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
+
 import { getAllPosts, getPostById, createPost, deletePost, fetchForms, getCommentsByPostId, addComment, 
   getFormDefinition, updatePost,  archivePost, getArchivedPosts,unArchivePost, updateForms, createForm,
-  getForm
-} from './database.js';
+  getForm, findOrCreateGoogleUser, findUserByUsername,
+  registerUser
+} from './databasePG.js';
+
+
 
 const app=express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.APP_PORT || 3001;
+const saltrounds =10;
+env.config();
 
 const __filename =fileURLToPath(import.meta.url);
 const __dirname=path.dirname(__filename);
@@ -23,6 +35,27 @@ const options = {
   cert: fs.readFileSync(path.join(path.resolve(), 'server.cert'))
 };
 
+// Middleware to Protect Routes
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/login');
+}
+
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie:{
+      maxAge:1000 * 60 * 60 * 24 * 7,
+      sameSite: 'strict',
+    }
+  })
+)
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 app.use(express.static('js'));
@@ -30,12 +63,51 @@ app.use(express.json());
 
 app.use(morgan('combined'));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
+// auth routes
+// Login
+app.get('/login', (req, res) => {
+  res.render('login.ejs')}
+); // Login page
+app.post(
+  '/login',
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true,
+  })
+);
+
+// Logout
+app.get('/logout', (req, res) => {
+  req.logout(() => {
+    res.redirect('/login');
+  });
+});
+
+// Google Authentication
+//app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+app.get(
+  "/auth/google/secrets",
+  passport.authenticate("google", {
+    successRedirect: "/my-poems",
+    failureRedirect: "/login",
+  })
+);
+
+
+
 //route to display poems by currently logged in user
-app.get('/my-poems/', async(req, res)=>{
+app.get('/my-poems/',ensureAuthenticated, async(req, res)=>{
 //to implement this once I add authorization
+  // To implement fetching user-specific poems
+  // const posts = await getPostsByUser(req.user.id); // Replace with your DB function
+  // res.render('my-poems.ejs', { posts });
 })
 
 
@@ -119,7 +191,8 @@ app.post('/poetry-forms', async(req,res) =>{
 
 //route to view poetry forms
 app.get('/poetry-forms', async(req, res) => {
-  const poetryForms=await fetchForms();
+  const poetryForms = await fetchForms();
+  // console.log(poetryForms);
   res.render('poetry-forms.ejs',{poetryForms});
  });
 
@@ -132,7 +205,7 @@ app.get('/comments/:postId', async (req, res) => {
 
 
 // Route to create a new post
-app.post('/new-poem', async (req, res) => {
+app.post('/new-poem',ensureAuthenticated, async (req, res) => {
     const title=req.body.title;
     const form=req.body.form;
     const content=req.body.content;
@@ -143,7 +216,7 @@ app.post('/new-poem', async (req, res) => {
 
 
 // Route to add a new comment
-app.post('/comments', async (req, res) => {
+app.post('/comments',ensureAuthenticated, async (req, res) => {
     const { postId, author, content } = req.body;
     await addComment(postId, author, content);
     res.sendStatus(200);
@@ -151,7 +224,7 @@ app.post('/comments', async (req, res) => {
 
 
 // Route to delete a post
-app.post('/delete/:id', async (req, res) => {
+app.post('/delete/:id',ensureAuthenticated, async (req, res) => {
     const { id } = req.params;
     await deletePost(id);
     res.redirect('/');
@@ -159,14 +232,14 @@ app.post('/delete/:id', async (req, res) => {
 
 
 //route to edit a post/poem
-app.post('/edit-post', async (req, res) => {
+app.post('/edit-post', ensureAuthenticated,async (req, res) => {
   const { post_id, title, form, content } = req.body;
   await updatePost(post_id, title, form, content);
   res.redirect('/');
 });
 
 
-app.post('/archive/:id', async(req, res) => {
+app.post('/archive/:id',ensureAuthenticated, async(req, res) => {
   const {id}=req.params;
   await archivePost(id);
   //res.sendStatus(200);
@@ -175,7 +248,7 @@ app.post('/archive/:id', async(req, res) => {
 
 
 // Route to fetch all archived posts
-app.get('/archived-posts', async (req, res) => {
+app.get('/archived-posts',ensureAuthenticated, async (req, res) => {
   try {
     const archivedPosts = await getArchivedPosts();
     res.json(archivedPosts);
@@ -187,7 +260,7 @@ app.get('/archived-posts', async (req, res) => {
 
 
 // Route to unarchive a post
-app.post('/unarchive/:id', async (req, res) => {
+app.post('/unarchive/:id',ensureAuthenticated, async (req, res) => {
   const { id } = req.params;
   try {
     await unArchivePost(id);
@@ -195,6 +268,78 @@ app.post('/unarchive/:id', async (req, res) => {
   } catch (error) {
     console.error('Error unarchiving post:', error);
     res.status(500).send('Internal Server Error');
+  }
+});
+app.post("/register", async(req, res)=>{
+  const email=req.body.username;
+  const { password }=req.body;
+  if (findUserByUsername(email)){
+    req.redirect("/login");
+  }else{
+    bcrypt.hash(password, process.env.SALTROUNDS,async(err, hash) =>{
+      if (err){
+        console.error("Error hashing password: ", err);
+      }else {
+        //register user function here
+        const user= registerUser(email,hash);
+        req.login(user, (err) =>{
+          if(!err){
+            res.redirect("/my-poems");
+            console.log("success");
+          }else{
+            console.log(err);
+          }
+        })
+      }
+    });
+  }
+});
+// Passport Local Strategy
+passport.use(
+  new LocalStrategy(async (username, password, done) => {
+    try {
+      const user = await findUserByUsername(username); // Replace with your DB function
+      if (!user) return done(null, false, { message: 'User not found' });
+
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) return done(null, false, { message: 'Invalid password' });
+
+      return done(null, user);
+    } catch (error) {
+      return done(error);
+    }
+  })
+);
+
+// Google Strategy
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: `http://localhost:${process.env.APP_PORT}/auth/google/callback`,
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+          const user = await findOrCreateGoogleUser(profile); // Replace with your DB function
+          return done(null, user);
+      } catch (error) {
+          return done(error);
+      }
+    }
+  )
+);
+
+// Serialize and Deserialize
+passport.serializeUser((user, done) => {
+  done(null, user); 
+});
+
+passport.deserializeUser(async (user, done) => {
+  try {
+    done(null, user);
+  } catch (error) {
+    done(error, null);
   }
 });
 

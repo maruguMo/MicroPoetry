@@ -18,7 +18,7 @@
                 <select id="form" name="form" required>
                     <!-- Options will be populated from the database -->
                     <% forms.forEach(function(form) { %>
-                      <option value="<%= form.Title %>"><%= form.Title %></option>
+                      <option value="<%= form.title %>"><%= form.title %></option>
                     <% }); %>
                   </select>
                 <!-- <input class="form-control" name ="Form" type="text" placeholder="Form"  required/> -->
@@ -139,7 +139,7 @@
                 <select id="edit-form" name="form" required>
                     <!-- Options will be populated from the database -->
                     <% forms.forEach(function(form) { %>
-                      <option value="<%= form.Title %>"><%= form.Title %></option>
+                      <option value="<%= form.title %>"><%= form.title %></option>
                     <% }); %>
                 </select>
             </div>
@@ -278,8 +278,8 @@
       async function fetchFormDesc(post){
         const formResponse = await fetch(`/formDescription/${encodeURIComponent(post.form)}`);
         const formDesc = await formResponse.json();
-        if (formDesc && formDesc.Description) {
-          return formDesc.Description;
+        if (formDesc && formDesc.description) {
+          return formDesc.description;
         }else{
           return 'No description available';
         }

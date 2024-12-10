@@ -1,10 +1,10 @@
-import { Client } from 'pg';
+import pg from 'pg';
 import dotenv from 'dotenv';
 
 dotenv.config(); // Load environment variables from .env file
 
 // Create a single pg client instance
-const pgClient = new Client({
+const pgClient = new pg.Client({
   user: process.env.PG_USER,
   host: process.env.PG_HOST,
   database: process.env.PG_DATABASE,
@@ -34,36 +34,36 @@ export const addComment = async (postId, author, content) => {
 
 export async function getFormDefinition(title) {
   const db = await getDb();
-  const res = await db.query('SELECT Description FROM PoetryForms WHERE Title = $1', [title]);
+  const res = await db.query('SELECT description FROM poetryforms WHERE title = $1', [title]);
   return res.rows[0];
 }
 
 export async function getForm(id) {
   const db = await getDb();
-  const res = await db.query('SELECT * FROM PoetryForms WHERE id = $1', [id]);
+  const res = await db.query('SELECT * FROM poetryforms WHERE id = $1', [id]);
   return res.rows[0];
 }
 
 export async function fetchForms() {
   const db = await getDb();
-  const res = await db.query('SELECT Id, Title, Description FROM PoetryForms ORDER BY Title ASC');
+  const res = await db.query('SELECT id, title, description FROM poetryforms ORDER BY title ASC');
   return res.rows;
 }
 
 export async function updateForms(title, description, id) {
   const db = await getDb();
   await db.query(
-    'UPDATE PoetryForms SET Title = $1, Description = $2 WHERE id = $3',
+    'UPDATE poetryforms SET title = $1, description = $2 WHERE id = $3',
     [title, description, id]
   );
-  const res = await db.query('SELECT * FROM PoetryForms WHERE id = $1', [id]);
+  const res = await db.query('SELECT * FROM poetryforms WHERE id = $1', [id]);
   return res.rows[0];
 }
 
 export async function createForm(title, description) {
   const db = await getDb();
   await db.query(
-    'INSERT INTO PoetryForms (Title, Description) VALUES ($1, $2)',
+    'INSERT INTO poetryforms (title, description) VALUES ($1, $2)',
     [title, description]
   );
 }
@@ -125,6 +125,52 @@ export async function archivePost(id) {
   await db.query('UPDATE posts SET archived = 1 WHERE id = $1', [id]);
 }
 
+export async function registerUser(email, hash){
+  try{
+    const db=await getDb();
+    const res= await db.query(
+                            `INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *`,
+                            [email,hash]
+                            );
+    return res.rows[0];
+  }catch(error){
+      console.log(error);
+      return false;
+    }
+}
+
+export async function findUserByUsername(username){
+  const db = await getDb();
+  
+  try{
+    const checkResult=await db.query('SELECT * FROM users WHERE email = $1',[username]);
+    return checkResult.rows.length > 0;
+  }catch(error){
+    console.log(error);
+    return false;
+  }
+}
+export async function findOrCreateGoogleUser(profile){
+  console.log(profile);
+  try{
+  const db = await getDb()
+  const res = await db.query("SELECT * FROM users WHERE email =$1",
+                                                  [profile.email]
+  );
+  if (!res.rows.length===0 ){
+    return res.rows[0];
+  }else{
+    const newUser = await db.query(
+      `INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *`,
+                                  [profile.email, "google"]
+    );
+    return newUser.rows[0];
+  }
+  }catch(error){
+    console.log(error);
+    return [];
+  }
+}
 export async function getArchivedPosts() {
   const db = await getDb();
   const res = await db.query('SELECT * FROM posts WHERE archived = 1');
@@ -140,44 +186,83 @@ export async function unArchivePost(id) {
 async function setup() {
   const db = await getDb();
   await db.query(`
-    CREATE TABLE IF NOT EXISTS posts (
-      id SERIAL PRIMARY KEY,
-      title TEXT,
-      content TEXT,
-      form TEXT,
-      views INTEGER DEFAULT 0,
-      archived BOOLEAN DEFAULT false,
-      timestamp TIMESTAMPTZ DEFAULT NOW(),
-      edit_timestamp TIMESTAMPTZ
-    );
+            SET session_replication_role = 'replica';
 
-    CREATE TABLE IF NOT EXISTS comments (
-      id SERIAL PRIMARY KEY,
-      post_id INTEGER,
-      author TEXT,
-      content TEXT,
-      timestamp TIMESTAMPTZ DEFAULT NOW(),
-      FOREIGN KEY (post_id) REFERENCES posts(id)
-    );
+            BEGIN;
 
-    CREATE TABLE IF NOT EXISTS PoetryForms (
-      id SERIAL PRIMARY KEY,
-      Title TEXT,
-      Description TEXT
-    );
+            -- Table: comments
+            DROP TABLE IF EXISTS comments CASCADE;
 
-    CREATE TABLE IF NOT EXISTS users (
-      id SERIAL PRIMARY KEY,
-      username TEXT NOT NULL UNIQUE,
-      email TEXT NOT NULL UNIQUE,
-      password TEXT NOT NULL,
-      created_at TIMESTAMPTZ DEFAULT NOW(),
-      updated_at TIMESTAMPTZ DEFAULT NOW()
-    );
+            CREATE TABLE IF NOT EXISTS comments (
+                id SERIAL PRIMARY KEY,
+                post_id INTEGER,
+                author TEXT,
+                content TEXT,
+                timestamp TIMESTAMPTZ DEFAULT NOW(),
+                user_id INTEGER REFERENCES users (id) ON UPDATE NO ACTION ON DELETE CASCADE,
+                FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE
+            );
+
+            -- Table: PoetryForms
+            DROP TABLE IF EXISTS PoetryForms CASCADE;
+
+            CREATE TABLE IF NOT EXISTS PoetryForms (
+                id SERIAL PRIMARY KEY,
+                Title TEXT,
+                Description TEXT
+            );
+
+            -- Table: posts
+            DROP TABLE IF EXISTS posts CASCADE;
+
+            CREATE TABLE IF NOT EXISTS posts (
+                id SERIAL PRIMARY KEY,
+                title TEXT,
+                form TEXT,
+                content TEXT,
+                views INTEGER DEFAULT 0,
+                timestamp TIMESTAMPTZ DEFAULT NOW(),
+                edit_timestamp TIMESTAMPTZ DEFAULT NULL,
+                archived BOOLEAN DEFAULT false
+            );
+
+            -- Table: Replies
+            DROP TABLE IF EXISTS Replies CASCADE;
+
+            CREATE TABLE IF NOT EXISTS Replies (
+                Id SERIAL PRIMARY KEY,
+                comment_id INTEGER,
+                content TEXT,
+                timestamp TIMESTAMPTZ DEFAULT NOW(),
+                user_id INTEGER REFERENCES users (id) ON DELETE CASCADE,
+                FOREIGN KEY (comment_id) REFERENCES comments (id) ON DELETE CASCADE
+            );
+
+            -- Table: users
+            DROP TABLE IF EXISTS users CASCADE;
+
+            CREATE TABLE IF NOT EXISTS users (
+                id SERIAL PRIMARY KEY,
+                username TEXT NOT NULL UNIQUE,
+                email TEXT NOT NULL UNIQUE,
+                password TEXT NOT NULL,
+                created_at TIMESTAMPTZ DEFAULT NOW(),
+                updated_at TIMESTAMPTZ DEFAULT NOW()
+            );
+
+            COMMIT;
+
+            -- Re-enable foreign key constraints
+            SET session_replication_role = 'origin';
   `);
 }
 
 // Initialize the database
-setup().catch((err) => console.error('Failed to initialize database', err));
+//setup().catch((err) => console.error('Failed to initialize database', err));
 
+export async function shutdown() {
+    console.log('Shutting down gracefully...');
+    await db.end();
+    process.exit(0);
+  }
 export default pgClient;
