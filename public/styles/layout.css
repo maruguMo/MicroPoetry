@@ -175,8 +175,8 @@ hr{
     /* height: 100px; */
 }
 .bannerImg{
-    height: 40px;
-    width: 40px;
+    height: 4dvh;
+    width: auto;
     margin: 0;
     padding: 0;
     border-radius: 50px;
@@ -185,14 +185,19 @@ hr{
     display: flex;
     flex-direction: row;
     background-color: rgb(43, 41, 41);
-    
+    align-items: center;
+    justify-content: space-between;
+    padding:5px;
 }
+#join,#login {
+    margin-left: auto;         
+  }
 .bannerTitle{
     font-size: 20px;
     background-color: rgb(43, 41, 41);
     color: white;
     margin-left: 5px;
-
+    margin-right: auto;
 }
 /* .menu{
     display: flex;

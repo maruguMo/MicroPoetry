@@ -100,6 +100,14 @@ app.get(
   })
 );
 
+app.get("/register", (req, res) => {
+  if (req.isAuthenticated)
+  {
+    res.render("/")
+  }else{
+    res.render("register.ejs");
+  }
+});
 
 
 //route to display poems by currently logged in user
@@ -112,7 +120,7 @@ app.get('/my-poems/',ensureAuthenticated, async(req, res)=>{
 
 
 // Route to fetch all posts
-app.get('/', async (req, res) => {
+app.get('/', ensureAuthenticated, async (req, res) => {
     const posts = await getAllPosts();
     const forms=await fetchForms();
     res.render('index.ejs', { posts, forms});
