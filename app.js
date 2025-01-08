@@ -120,10 +120,16 @@ app.get('/my-poems/',ensureAuthenticated, async(req, res)=>{
 
 
 // Route to fetch all posts
-app.get('/', ensureAuthenticated, async (req, res) => {
+app.get('/', async (req, res) => {
     const posts = await getAllPosts();
     const forms=await fetchForms();
-    res.render('index.ejs', { posts, forms});
+    console.log(req.isAuthenticated());
+    console.log(req.user);
+    if (req.isAuthenticated()){
+      res.render('index.ejs', { posts, forms});
+    }else{
+      res.render('home.ejs', { posts, forms});
+    }
   });
 
 

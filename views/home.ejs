@@ -1,3 +1,59 @@
 <%- include("partials/header") %>
+<h5 id="Posts" class="ModalTitle">New Poems</h5>
+<!-- main posts viewer this creates a header bar before the posts are painted -->
+<div class="header-bar">
+        <div class="header-title">Title</div>
+        <div class="header-form px-4">Form</div>
+        <div class="header-views">Views</div>
+        <div class="header-date">Posted</div>
+        <div class="commentsheader">Comments</div>
+</div>
+<ul id="posts" class ="posts">
+    <% posts.forEach(post => { %>
+        <!-- <hr> -->
+        <li>
+            <div class="card post">
+                <div class="content py-0">
+                    <div class="title position-relative">
+                        <a href="#" class=" btn btn-sm view-post position-relative" data-id="<%= post.id %>">
+                            <span><%= post.title %></span>
+                            <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger badge notify-white">
+                              <%= post.comments_count %>
+                            </span> 
+                        </a>
+
+                    </div>
+
+                    <div class="Poemform px-2">
+                        <span data-formName="<%= post.form %>"><%= post.form %></span>
+                    </div>
+                    <div class="views">
+                        <span><%= post.views %></span>
+                    </div>
+                    <div class="date-posted">
+                        <span>
+                           <%= new Date(post.timestamp).toLocaleString('en-US', { 
+                              year: 'numeric', month: 'short', day: 'numeric' , hour: 'numeric', minute: 'numeric', second: 'numeric' 
+                            }) %>
+                        </span>                        
+                    </div>
+                </div>
+            </div>
+        </li>
+    <% }); %>
+</ul>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end pagination-sm">
+      <li class="page-item disabled">
+        <a class="page-link">Previous</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#">Next</a>
+      </li>
+    </ul>
+</nav>
 
 <%- include("partials/footer") %>
